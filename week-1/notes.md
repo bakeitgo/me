@@ -17,16 +17,16 @@
 > ## Body (25-30 lines)
 ---
 > ## Footer
- #
-  > (References / URL's)
-  #
-  > (Hashtags on last line after 4-space indent) *they provide keys of your notes e.g #ssh #unix #bash *
-  #
-  > (Stick with single level lists)
+* (References / URL's)
+* (Hashtags on last line after 4-space indent) *they provide keys of your notes e.g #ssh #unix #bash*
+* (Stick with single level lists)
 ---
 
 ## Why Github?
-*Built-in search engine
+* Built-in search engine
+* Universal
+* Displays Markdown
+* Live editing from the Internet
 #
 *Nothing is private on github, be careful
 
