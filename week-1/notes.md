@@ -1,8 +1,8 @@
 # How to learn?
 ---
 ##
-*rwx*
-`read, research, write it, experiemnt, explore, experience, exchange`
+> *rwx*
+> `read, research, write it, experiemnt, explore, experience, exchange`
 --- 
 ## 
 ---
@@ -12,18 +12,22 @@
 ---
 ## zettel structure
 
-## Title (~50chars)
+> ## Title (~50chars)
 ---
-## Body (25-30 lines)
+> ## Body (25-30 lines)
 ---
-## Footer
-  (References / URL's)
-  (Hashtags on last line after 4-space indent)
-  (Stick with single level lists)
+> ## Footer
+ #
+  > (References / URL's)
+  #
+  > (Hashtags on last line after 4-space indent) *they provide keys of your notes e.g #ssh #unix #bash *
+  #
+  > (Stick with single level lists)
 ---
 
 ## Why Github?
 *Built-in search engine
+#
 *Nothing is private on github, be careful
 
 ## Convention 
