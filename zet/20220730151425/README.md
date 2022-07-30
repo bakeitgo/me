@@ -16,3 +16,5 @@
 
 # practice coding 
 http://www.replit.com/~/          
+# windows terminal
+http://www.github.com/microsoft/terminal/releases
