@@ -14,7 +14,9 @@ search for all packages with `ssh` in name
 * Remote access considerations? - You need to be in same network / SECURITY (if you want to set up serverr ouitside in the cloud, you gotta be hacked
 * Setting up a Digital Ocean account
 * How to setup GCP "nano" server for free?
-* Running ubuntu server headless and connecting with ssh
+* Running VM headless and connecting with ssh
+  * via GUI
+  * From (DOS) CLI
 * narc project (spying on all file changes)
 
 
@@ -33,6 +35,8 @@ search for all packages with `ssh` in name
 *  `<Ctrl>-c` - interrrupt whatever (exit)
 *  `<Ctrl>-d` - send "end of data/file"
 *  `sudo apt install openssh-server` - install ssh server (if ssh doesn't works)
+*  `vboxxmanage startvm <VMNAME> --type headless` - start *vm* headless
+
 ## Related
 
 * https://www.virtualbox.org/manual/ch06.html
