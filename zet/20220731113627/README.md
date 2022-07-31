@@ -3,7 +3,7 @@
 * What is NAT (Network Address Translation) and Bridged
 * What is an IP address?
 * What is `git-bash` and why would I need it?
-* What about `putty` for ssh access?w
+* What about `putty` for ssh access? - It's useful because we doesn't need admin privileges to connect via ssh
 * Why can't i use 127.x.x.x address? - It's a loopback address, it's always redirecting to the our PC
 * How can you test ssh connection to *localhost*?
 * What is a "user" and "userid"?
@@ -23,7 +23,7 @@ search for all packages with `ssh` in name
 *  `who` - display who is logged in and how
 *  `last` - summary of last logged in users
 *  `whoami` - print effective user name/ID
-*  `id` - display user and group IDs (here you can escalate privileges)
+*  `id` - display user and group IDs (here you can escalate privileges) [shows permission groups]
 *  `w` - display logger version of who is logged in
 *  `<Ctrl>-c` - interrrupt whatever (exit)
 *  `<Ctrl>-d` - send "end of data/file"
@@ -41,3 +41,6 @@ search for all packages with `ssh` in name
 * update all packages (requires to install update for specified package after) - `sudo apt update` then `sudo apt install {{package-name}}`
 * use apt-get in scripts, because it keeps backward compatibility as long as he can
 * sudo apt autoremove -- removes all 
+
+
+#ssh #VM #openssh #apt #apt-get #ip #ipconfig #user #userid #who #w #last #users #id #permission #groups #root #adm #putty
