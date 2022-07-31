@@ -1,6 +1,7 @@
 # VIM
 
 | Action | Mode | Description |
+|--------|------|-------------|
 | i | Command | Change into -- *INSERT* -- mode
 
 
