@@ -4,7 +4,7 @@
 |--------|------|-------------|
 | i | Command | Change into -- *INSERT* -- mode |
 | ESC | INSERT | Escape -- *INSERT* -- to Command. |
-| &#02190; | Both | Move left |
+| &#U+02190; | Both | Move left |
 | U+02193 | Both | Move down |
 | U+02191 | Both | Move up |
 | U+02192 | Both | Move right |
