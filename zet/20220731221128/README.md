@@ -4,7 +4,7 @@
 |--------|------|-------------|
 | i | Command | Change into -- *INSERT* -- mode |
 | ESC | INSERT | Escape -- *INSERT* -- to Command. |
-| ```&#x2190;``` | Both | Move left |
+| &larr; | Both | Move left |
 | &darr; | Both | Move down |
 | &uarr; | Both | Move up |
 | &rarr; | Both | Move right |
