@@ -49,7 +49,7 @@ search for all packages with `ssh` in name
 * upgrade all package - `sudo apt upgrade`
 * update all packages (requires to install update for specified package after) - `sudo apt update` then `sudo apt install {{package-name}}`
 * use apt-get in scripts, because it keeps backward compatibility as long as he can
-* sudo apt autoremove -- removes all 
+* sudo apt autoremove -- removes all unused packages
 
 
 #ssh #VM #openssh #apt #apt-get #ip #ipconfig #user #userid #who #w #last #users #id #permission #groups #root #adm #putty
