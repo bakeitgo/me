@@ -11,10 +11,7 @@
 search for all packages with `ssh` in name
 * What package need sto be installed to connect with ssh? OPENSSH
 * What is the correct `ssh` connection address?
-* What about `cmd` (DOS)? It is working in case of git bash
-* What are your favorite Windows Terminal settings?
-* Should i use VSCode and how?
-* What is JSON? lightweight file format for data exchange
+
 
 ## Commands
 *  `ip a` - show all ip addresses
