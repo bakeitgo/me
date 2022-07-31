@@ -14,6 +14,8 @@ search for all packages with `ssh` in name
 * Remote access considerations? - You need to be in same network / SECURITY (if you want to set up serverr ouitside in the cloud, you gotta be hacked
 * Setting up a Digital Ocean account
 * How to setup GCP "nano" server for free?
+* Running ubuntu server headless and connecting with ssh
+* narc project (spying on all file changes)
 
 
 ## Commands
