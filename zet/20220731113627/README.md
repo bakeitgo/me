@@ -11,6 +11,9 @@
 search for all packages with `ssh` in name
 * What package need sto be installed to connect with ssh? OPENSSH
 * What is the correct `ssh` connection address?
+* Remote access considerations? - You need to be in same network / SECURITY (if you want to set up serverr ouitside in the cloud, you gotta be hacked
+* Setting up a Digital Ocean account
+* How to setup GCP "nano" server for free?
 
 
 ## Commands
@@ -31,7 +34,7 @@ search for all packages with `ssh` in name
 ## Related
 
 * https://www.virtualbox.org/manual/ch06.html
-* 
+* https://www.washingtonpost.com/technology/2022/05/19/hacking-cfaa-justice-policy/
 
 
 ## Quick RECAP
