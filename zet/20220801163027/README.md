@@ -48,5 +48,7 @@ web servers are used to run as root (suid)
 ## Relates to:
 
 https://youtu.be/ba0v04Q9Fqk?t=8244
+https://linuxize.com/post/how-to-add-user-to-group-in-linux/
+https://www.geeksforgeeks.org/permissions-in-linux/
 
 #UNIX Timeshare #adduser #stat #Host #permissions #editingpermissions #chmod #sudo #passwd #deluser #addgroup #modifygroup #details #stat
