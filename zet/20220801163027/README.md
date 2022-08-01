@@ -47,4 +47,6 @@ web servers are used to run as root (suid)
 * `[u]ser [g]roup [o]thers` - list of users shortcuts to add permission
 ## Relates to:
 
+https://youtu.be/ba0v04Q9Fqk?t=8244
+
 #UNIX Timeshare #adduser #stat #Host #permissions #editingpermissions #chmod #sudo #passwd #deluser #addgroup #modifygroup #details #stat
