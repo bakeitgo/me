@@ -3,11 +3,17 @@
 * `pwd` / print working directory
 * `ls` / show files in current folder
 * `cd` / move to the another folder
+* `set -o noclobber` - stop from blowing away files
 * `ls -a` / show all files including hidden
 * `ls -al` / show all files including hidden begin with `.` long named
 * `shutdown -h now` / `poweroff` / `init 0` // shutdown pc now
 * `mv` / rename source to dest, or move source to directory
+  * Be careful! If you do mv <filename1> <filename2> first file gonna
+  * overwrite second file!
 * `sudo` / do it as administrator
+* `mv -i foo other` - change filename but protect against overwrites
+* `scp foo target:` - copy *foo* from *host* to remote target *home dir*
+(def)
 * `apt` / advanced packaging tool package manager
 * `apt upgrade` // upgrade *all* packages to latest version
 * `apt-get` when you are running a script because its supporting backward compatibility as much as he can
@@ -63,6 +69,10 @@
 * `rm -rf <name>` - force file remove with <name>
 * `sudo su - <username>` - login as username without logging off
 * `sudo su -` - login as a root without logging off
+* `cp -ar foo other` - copy *foo* to *other* keeping timestamp
+
+
+
 
 # Relates to: 
 * http://www.linuxcommand.org

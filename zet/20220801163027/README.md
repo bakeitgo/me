@@ -54,6 +54,7 @@ web servers are used to run as root (suid)
 * `sudo su -` - login as a root without logging off
 * `touch <name>` - create file with <name>
 * `mkdir <name>` - create dir with <name>
+* `cp -ar foo another` recursively copy *foo* to *another* keeping timestamp
 
 
 ## Relates to:
