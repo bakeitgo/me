@@ -45,6 +45,17 @@ web servers are used to run as root (suid)
 * `which foo` - print th efull file path to the executable foo
 * `chown foo rando` - change ownership of *foo* to *rando*
 * `[u]ser [g]roup [o]thers` - list of users shortcuts to add permission
+* `mv foo other` change file/dir *foo* name to *other*
+* `cp foo other` - copy file/dir *foo* name to *other* | move
+* `rmdir <name>` - remove directory *only if empty*
+* `rm <name>` - remove file with <name>
+* `rm -rf <name>` - force file remove with <name>
+* `sudo su - <username>` - login as username without logging off
+* `sudo su -` - login as a root without logging off
+* `touch <name>` - create file with <name>
+* `mkdir <name>` - create dir with <name>
+
+
 ## Relates to:
 
 * https://youtu.be/ba0v04Q9Fqk?t=8244
