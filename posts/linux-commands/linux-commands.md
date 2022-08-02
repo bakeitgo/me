@@ -56,6 +56,13 @@
 * `grep jill /etc/passwd` - list only line containing *jill*
 * `ls -inl` - show list of files but with number of uid/gid
 * `chown -R user:group <olddir>` - recursively change ownership/group
+* `mv foo other` change file/dir *foo* name to *other*
+* `cp foo other` - copy file/dir *foo* name to *other* | move
+* `rmdir <name>` - remove directory *only if empty*
+* `rm <name>` - remove file with <name>
+* `rm -rf <name>` - force file remove with <name>
+* `sudo su - <username>` - login as username without logging off
+* `sudo su -` - login as a root without logging off
 
 # Relates to: 
 * http://www.linuxcommand.org
