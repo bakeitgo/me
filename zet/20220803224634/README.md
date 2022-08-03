@@ -1,4 +1,4 @@
-# REGEX
+# REGEX - POSIX
 
 
 
@@ -7,6 +7,13 @@
 
 * Why is it better to allow rather than deny?
 	* When you deny, things gonna be complicated, it is better to specify which string you want to allow.
+
+* Three families of REGEX
+	* POSIX Basic REGEX
+	* Extended REGEX syntax
+	* Simple REGEX syntax
+* PERL defined PCRE (Perl compatible regular expressions) REGEX standard, which node/javascript are using.
+* Today POSIX classes are outdated, because it doesn't handle emojis, kanji characters etc., see *unicode*
 
 * REGEX
 	* `a` - matches *a* character in whole string
@@ -26,7 +33,10 @@
 	* `[adls]` - every string which contains *a,d,l,s* chars
 	* `^[^a]` - everything which not begins with *a* char
 	* `[^t]$` - everything which not ends with *t* char
-	* 
+	* `[a-zA-Z]` - everything which have a-z
+	* `[a-cx-z]` | `[abcx-z]` - matches a,b,c,x,y,z
+
+	
 
 ## Related:
 
@@ -37,6 +47,8 @@
 * https://github.com/manish-old/ebooks-2/blob/master/O'Reilly%20-%20Mastering%20Regular%20Expressions%202nd%20Edition.pdf
 
 * "Missing Semester" on YouTube (Regular Expressions)
+
+* https://en.m.wikibooks.org/wiki/Regular_Expressions/POSIX_Basic_Regular_Expressions
 
 ### Practise:
 
