@@ -46,7 +46,8 @@
 * `sudo groupadd <groupname>` add new permission group
 * `sudo su - ` - effectively login as root without logging out
 * `sudo su - foo` - effectively login as foo user
-* `su - <name>` - effectively login as <name> user (change current user)* `stat -c '%a'` - see octal permissions
+* `su - <name>` - effectively login as <name> user (change current user
+* `stat -c '%a'` - see octal permissions
 * `sudo usermod -aG <groupname> <username>` add user to a group
 * `ls -l $(which sudo)` - list perms for `sudo` command (dont use backticks, they *cant nest*)
 * `echo foo` - write foo in stdout
@@ -70,7 +71,7 @@
 * `sudo su - <username>` - login as username without logging off
 * `sudo su -` - login as a root without logging off
 * `cp -ar foo other` - copy *foo* to *other* keeping timestamp
-
+* `tr <set1> <set2>` - replace set1 characters with set2 characters e.g.`echo linuxize | tr 'lin' 'red'` will print to stdout *reduxize*
 
 
 

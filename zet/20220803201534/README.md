@@ -43,3 +43,6 @@
 * `tee` - save *stdout* to a file, and send *stdout* to pipeline
 
 
+#stdout #stdin #stderr #UNIX #tee #file #overwrite #>> #> #append #concat #readtoplines #readbottomlines #tail #head #tac #reversereadfile #tee
+
+
