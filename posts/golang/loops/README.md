@@ -77,16 +77,20 @@
 	```
 
 ### Infinite loop
-	* If you omit *conditional expression* loop will be *infinite*
+* If you omit *conditional expression* loop will be *infinite*
 	
-	```go
-	package main
+```go
+package main
 
-	func main() {
-		for {
-		}
+func main() {
+	for {
 	}
-	```
+}
+```
+
+
+
+
 
 ## Relates to: 
 
