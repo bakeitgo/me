@@ -41,7 +41,7 @@
 	* e.g 
 		1. `var i int = 42`
 		1. `var f float64 = float64(i)`
-		1. `var u uint = uint(f)
+		1. `var u uint = uint(f)`
 	* or easier:
 		1. `i := 42`
 		1. `f := float64(i)`

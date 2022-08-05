@@ -47,11 +47,11 @@ func main() {
 
 ### Struct literals
 	
-	* *Literal struct* means new created value which contains struct by exchangeable values of struct fields
+* *Literal struct* means new created value which contains struct by exchangeable values of struct fields
 
-	* You can assign values to chosen struct fields, by using *Name:* notation. ** The order of fields in struct doesn't  matter **
+* You can assign values to chosen struct fields, by using *Name:* notation. ** The order of fields in struct doesn't  matter **
 
-	* Prefix **&** returns pointer to struct
+* Prefix **&** returns pointer to struct
 
 ```go
 package main
