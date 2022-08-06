@@ -80,9 +80,69 @@ func main() {
 * Note: **naked** return, should be used only in short functions, otherwise it impact readability.
 
 
+### Function values
+
+* *Functions* are also values. They can be provided as same as other values.
+
+* Values which are *functions*, can be used as other *function* arguments and values which *func* can return
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func compute(fn func(float64, float64) float64) float64 {
+	return fn(3, 4)
+}
+
+func main() {
+	hypot := func(x, y float64) float64 {
+		return math.Sqrt(x*x + y*y)
+	}
+	fmt.Println(hypot(5, 12))
+
+	fmt.Println(compute(hypot))
+	fmt.Println(compute(math.Pow))
+}
+```
+
+
+### Function Closures
+
+* What is a closure?
+
+	* Closure is a utility, which provides access to *variables* which are outside **current scope**
+
+```go
+package main
+
+import "fmt"
+
+func adder() func(int) int {
+	sum := 0
+	return func(x int) int {
+		sum += x
+		return sum
+	}
+}
+
+func main() {
+	pos, neg := adder(), adder()
+	for i := 0; i < 10; i++ {
+		fmt.Println(
+			pos(i),
+			neg(-2*i),
+		)
+	}
+}
+```
+
 # Related to: 
 * https://go.dev/doc/
 
 
 
-#functions #function #types #funcsyntax #func #args #types #nakedreturn #return
+#functions #function #types #funcsyntax #func #args #types #nakedreturn #return #functionasargument #functionasparameter #argument #parameter #closures
