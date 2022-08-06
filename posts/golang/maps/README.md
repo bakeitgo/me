@@ -8,11 +8,11 @@
 
 * What is initial (zero) value of *map*?
 
-    * It's a `nil` value
+    * It's a `nil` value. `nil` Map haven't *keys* and none *key* can't be added to it
 
 * How to create a *map*?
 
-    * Using func `make` or via `var`
+    * Using func `make`
 
 ```go
 package main
