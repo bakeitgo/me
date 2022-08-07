@@ -41,7 +41,7 @@
 	#
 * Which to choose?	
 	#
-	* ***IaaS*** - If enterprise wants a virtualization, servers, storage managed by cloud, rest by SysOpses. 
+	* ***IaaS*** - If enterprise wants a virtualization, servers, storage managed by cloud.
 	
 	#### **Benefits** of using ***IaaS***:
 	#
@@ -56,7 +56,7 @@
 
 	1. **Provides disaster recovery**. What? It prevents or minimize data loss due to unforeseen circumstances, it also includes *failover* and *fallback* procedures. **Failover** is a process to offload workloads to backup systems, so prod processes and end-user experience are disrupted as less as possible. **Fallback** is a data fallback to the original primary systems How? Via geographically-dispersed infrastructure.
 	#
-	* ***PaaS*** - Provides cloud platforms and runtime env to develop, run and manage applications without maintaining architecture, PaaS provides platform to do it. 
+	* ***PaaS*** - Provides cloud platforms and runtime env to develop, run and manage applications without maintaining architecture.
 	#### **Benefits** of using Paas:
 	#
 	###
@@ -71,7 +71,7 @@
 
 	1. **Less to manage** - Infrastructure management, patches, updates and other maintain-need task are on the cloud provider shoulders.
 	#
-	* ***SaaS*** - If you want everything in the cloud, and don't own any IT equipment, this is a perfect fit. Everyone is using ***SaaS*** for e.g. *Slack*, *Dropbox* are *SaaS* apps. They manage everything, database, managingg user, server hardware, etc.
+	* ***SaaS*** - If you want everything in the cloud, and don't own any IT equipment, this is a perfect fit. Everyone is using ***SaaS*** for e.g. *Slack*, *Dropbox* are *SaaS* apps. They manage everything, database, user management, server hardware, etc.
 	#
 	### Comparison of ***IaaS, PaaS, SaaS***:
 
