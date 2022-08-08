@@ -16,7 +16,7 @@
 
 
 
-* Microservices 
+## Microservices 
 
     * A small service (process) which makes one task in deterministic way. It's created with own dependencies, data storage, programming platform. 
 
@@ -39,4 +39,55 @@
     * Distributed data - By design microservice encapsulate its own data and expose it via interface, how to query data or implement transaction across multiple services?
 
     * Secrets - How microservices will store and manage sensitive data which cant be exposed?
+
+## Containers
+
+* What is a container?
+
+    * Code, Dependencies and Runtime is packaged into binary. It's a *container image*
+
+    * Images are stored in container registry it acts like a repository / library for images.
+
+    * Registry can be located in your local computer, data center or public cloud. *Docker* itself maintains a public registry via *Docker hub* 
+
+    * When application starts, container is transformed from image to running container instance. Instance runs on any computer which have *container runtime engine* installed
+
+    * Each container is independent and isolated from each other.
+
+    * it embraces **Dependencies** principle from [Twelve-Factor Application](https://12factor.net/)
+    ##
+    *Factor #2 specifies that “Each microservice isolates and packages its own dependencies, embracing changes without impacting the entire system.”*
+
+
+* Why containers?
+
+    * They can be easily managed, they are isolated from infrastructure (they act as a single package), guarantee consistency across environments, we can deploy them in any environment that hosts *Docker runtime engine*, they are cheap because we don't have to pre-configure each environment with dependencies and runtime engines everytime. They have smaller size than VM's (it increases density or number of microservices which can run at one time)
+
+* How to manage containers? 
+
+    * To manage it we need *container orchestrator*
+
+* What orchestration ensures?
+
+    * Scheduling - provision container instances automatically
+
+    * Affinity / anti-affinity - provision containers nearby or far apart from each other (helps availability and performance)
+
+    * Health monitoring - detects failures
+
+    * Failover - If container fails, setup new
+
+    * Scaling - If new container is needed, provide it.
+
+    * Networking - Containers need to communciate, right?
+
+    * Service discovery - Containers need to know where others are located.
+
+    * Rolling upgrades - Coordinate upgrades, with zero downtime. Rollback easily if needed.
+
+* What points of [Twelve-Factor Application](https://12factor.net/) orchestration ensures?
+
+    * Factor #9 *specifies that “Service instances should be disposable, favoring fast startups to increase scalability opportunities and graceful shutdowns to leave the system in a correct state.” Docker containers along with an orchestrator inherently satisfy this requirement."*
+
+    * Factor #8 *specifies that “Services scale out across a large number of small identical processes (copies) as opposed to scaling-up a single large instance on the most powerful machine available.*
 
