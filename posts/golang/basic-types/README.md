@@ -9,6 +9,8 @@
 	* `float32 float64`
 	* `complex64 complex128`
 
+* `uint` can only have positive values, `int` doesn't care 
+
 * `var` can be formuled in blocks like in `import`
 	```go
 	package main
@@ -61,7 +63,60 @@
 	   g := 0.867 + 0.5i // complex128
 	   `
 
+### Operators
 
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	a := 10
+	b := 3
+	fmt.Println(a + b)
+	fmt.Println(a - b)
+	fmt.Println(a * b)
+	fmt.Println(a / b)
+	fmt.Println(a % b)
+}
+```
+### bit operators
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	a := 10 // 1010
+	b := 3 // 0011
+	fmt.Println(a & b) // 0010
+	fmt.Println(a | b) // 1011
+	fmt.Println(a ^ b) // 1001
+	fmt.Println(a &^ b) // 0100
+}
+```
+
+### bit shifting
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	a := 8 // 2^3
+	fmt.Println(a << 3) // 2^3 * 2^3 = 2^6
+	fmt.Println(a >> 3) // 2^3 / 2^3 = 2^0
+
+}
+```
 
 # Related to: 
 
