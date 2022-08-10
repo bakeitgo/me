@@ -6,12 +6,13 @@
 
 * In order to access field from struct, we use `.`
 
+* `type` keyword creates a new type with name you specify
 ```go
 package main
 
 import "fmt"
 
-type Vertex struct {
+type Vertex struct { // here type is Vertex, it can be used similar to string,int etc. e.g. in function parameters
 	X int
 	Y int
 } // This is how we declare struct
