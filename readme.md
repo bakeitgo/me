@@ -1,1 +1,1 @@
-# This is my note storage
+# This is place where I store all notes, mostly useful but it depends.
