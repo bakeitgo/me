@@ -10,7 +10,7 @@
     ##
     `func (T) Read(b []byte) (n int, err error)`
 
-    * Read fill given `byte slice` with data and returns number of bytes `filled` and an `error` value. When stream ends it returns an `io.EOF`
+    * Read fill given `byte slice` with data and returns number of bytes `filled` and an `error` value. When stream ends it returns an `io.EOF` error
 
     * The example code creates a strings.Reader and consumes its output 8 bytes at a time. 
 
