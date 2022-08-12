@@ -63,11 +63,58 @@
     * Different versions of softwares
 
     * Roll forward (something is broke? -> ship new image)
+***
+## Building / running docker image
 
+* Commands
+
+    * `docker build --tag hello-world .` build an image with tag name hello-world
+
+    * `docker images` - show list of images
+
+    * `docker ps` - check running containers list
+
+    * `docker run <imgname>` - run image
+
+    * `docker run -p 8080:80` - map 8080 port on host to 80 port on container
+
+    * `docker run -d` - run container detached (headless)
+
+    * `docker stop <name>` - stop container
+
+    * `docker start <name>` - start container
+
+    * `docker logs <name>` - show logs of container
+
+    * `docker logs <name> -f` - show logs of container continously
+
+***
+## Repository for images
+
+* *Docker Hub* is an images repo
+
+    * We can do here auto builds (e.g. you push changes to github repo, image is build with new stuff)
+
+* *Docker compose*
+
+    * Run multi-container Docker apps. It uses YAML file to configure app services.
+
+* Commands
+
+    * `docker push <reponame>:<imgname>` - push img to repo
+
+    * `docker pull <reponame>` - pull img from repo
+
+    * `docker-compose up` - starts all containers
+
+    * `docker-compose down` - shutdown containers
 
 # Related to
 
 * https://docs.docker.com/get-started/
+
 * https://youtu.be/iqqDU2crIEQ?t=290
+
+* https://docs.docker.com/compose/
 
 #containers #docker #kubernetes #k8s #vm #virtualisation
