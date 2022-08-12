@@ -15,8 +15,10 @@
     * It's all described in [Twelve-Factor Application](https://12factor.net/)
 
 
-
+***
 ## Microservices 
+
+* What is a *microservice*?
 
     * A small service (process) which makes one task in deterministic way. It's created with own dependencies, data storage, programming platform. 
 
@@ -39,7 +41,7 @@
     * Distributed data - By design microservice encapsulate its own data and expose it via interface, how to query data or implement transaction across multiple services?
 
     * Secrets - How microservices will store and manage sensitive data which cant be exposed?
-
+***
 ## Containers
 
 * What is a container?
@@ -61,7 +63,71 @@
 
 * Why containers?
 
-    * They can be easily managed, they are isolated from infrastructure (they act as a single package), guarantee consistency across environments, we can deploy them in any environment that hosts *Docker runtime engine*, they are cheap because we don't have to pre-configure each environment with dependencies and runtime engines everytime. They have smaller size than VM's (it increases density or number of microservices which can run at one time)
+    * They can be easily managed, they are isolated from infrastructure (they act as a single package), guarantee consistency across environments, we can deploy them in mostly in all environment that hosts *Docker runtime engine* (depends on CPU architecture), they are cheap because we don't have to pre-configure each environment with dependencies and runtime engines everytime. They have smaller size than VM's (it increases density or number of microservices which can run at one time)
+***
+## Differences between VMs and Containers
+
+* VMs is an Hardware virtualisation, it have an hypervisor above itself (which can run multiple instances of hardware and provides ram rom cpu etc.)
+
+    * We call it a full system virtualisation ( we work on hardware level )
+
+    * Isolation - Imagine we have a server, and we want to split its resources, and we are creating different machines which splits it (our server looks like a bunch of servers).  They are relatively independent (communicating with e.g. vm 1 seems like communicating another server)
+
+    * Interaction - we interact with hardwares which is managed by hypervisor
+
+    * Flexibility - we have flexibility around managing how RAM, ROM, CPU threads our VM will use 
+
+* Containers is an hardware virtualisation, on top have *kernel* (helps in communiucation between each other), on top we got *OS* (host OS), on top its every runned containers (it can be more than 1)
+
+    * We call it an operating system level virtualisation (because all bases on OS)
+
+    * Process isolation - our application see only things it needs (libraries, binaries etc.) (every container thinks have different host)
+
+    * Interaction - two things here - namespaces (by it container thinks is operating on different OS), cgroups (they monitor and measure our resources to make sure we will never overload our OS)
+
+    * Portability - Our container is defined in *single file* so its portable, we store it in repo and it is able to run it mostly everywhere (have to be compatible with cpu architecture ((ARM, x86))
+
+
+### *Note: We can mix both approaches*
+
+*** 
+## What are containers and why do we care?
+
+* First let explain concept from where it come from - *VMs*
+
+    * Problem is we got individual machines / VMs and it is hard to maintain
+
+    * VMs are ***EXTREMELY ERROR PRONE***
+
+    * Servers as Pets
+    ##
+    1. Long lived
+    1. 99.999% uptime
+    1. If one went down, troubleshoot and restore
+
+* Solution - *Containers*
+
+    * What if we could bundle all our app code, support binaries, and configuration together and only do that once?
+
+    * It's called an *image*, we put them on servers, if some breaks , we drop it down and setup new
+
+    * Each one is copy of each other, so problem with hard managing is dropped
+
+* 3 Phases of *Docker* 
+
+    1. *Build Image* (package everything app needs to run)
+
+    1. *Ship Image* (ship to runtimes in cloud or local machine)
+
+    1. *Run image* (execute your application)
+
+* What else it provides?
+
+    * CI/CD (test and deploy consistently to different envs. (stage, uat, production))
+
+    * Different versions of softwares
+
+    * Roll forward (something is broke? -> ship new image)
 
 * How to manage containers? 
 
@@ -91,3 +157,60 @@
 
     * Factor #8 *specifies that “Services scale out across a large number of small identical processes (copies) as opposed to scaling-up a single large instance on the most powerful machine available.*
 
+***
+## Building / running docker image
+
+* Commands
+
+    * `docker build --tag hello-world .` build an image with tag name hello-world
+
+    * `docker images` - show list of images
+
+    * `docker ps` - check running containers list
+
+    * `docker run <imgname>` - run image
+
+    * `docker run -p 8080:80` - map 8080 port on host to 80 port on container
+
+    * `docker run -d` - run container detached (headless)
+
+    * `docker stop <name>` - stop container
+
+    * `docker start <name>` - start container
+
+    * `docker logs <name>` - show logs of container
+
+    * `docker logs <name> -f` - show logs of container continously
+
+***
+## Repository for images
+
+* *Docker Hub* is an images repo
+
+    * We can do here auto builds (e.g. you push changes to github repo, image is build with new stuff)
+
+* *Docker compose*
+
+    * Run multi-container Docker apps. It uses YAML file to configure app services.
+
+* Commands
+
+    * `docker push <reponame>:<imgname>` - push img to repo
+
+    * `docker pull <reponame>` - pull img from repo
+
+    * `docker-compose up` - starts all containers
+
+    * `docker-compose down` - shutdown containers
+***
+
+# Related to
+
+* https://docs.docker.com/get-started/
+
+* https://youtu.be/iqqDU2crIEQ?t=290
+
+* https://docs.docker.com/compose/
+
+  
+#containers #docker #kubernetes #k8s #vm #virtualisation #cloudnative #cloud-native #pets #cattle #microservices #dockerhub #imagerepo #dockercompose #docker-compose
