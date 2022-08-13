@@ -102,6 +102,46 @@
 
     * `:#,#s/old/new/g` - change 'old' word with 'new' in the #,# line range
 
+    * `:!` - execute external shell command
+
+    * `v` - turns visual mode ( by using j k h l) we can select text in this mode, we can save this part by using :w FILENAME
+
+    * `:r filename` insert content from filename after cursor
+
+    * `o` - open new line below and turn on insert mode
+
+    * `a` append text after the cursor
+
+    * `A` append text starting from end of line
+
+    * `R` - replace more than one character (after turning mode on start writing (isnert does same))
+
+    * `y` - copy line
+
+    * `p` - paste copied text
+
+    * `:set ic` - sets the ignore case option, (when search for some word, it ignores upper/lowercasing)
+
+    * `:set hls is` - sets the hlsearch and incsearch options (now when search words are highlighted)
+
+    * `to disable type no between option` e.g. `:set nohls nois`
+
+    * If you want to ignore case only for one search use `\c` after word to serach e.g. `/ignore\c`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Related to
 
 * https://youtu.be/PSSg7NWXe4Y?t=6938
