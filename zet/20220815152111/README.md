@@ -54,6 +54,17 @@
 
 	* above, we firstly redirect stdout, then stderr
 
+	* we have always do it as above, we cannot redirect first stderr then stdout
+
+	* *recent versions of bash* provides more user-friendly method. e.g. ls -l /bin/usr &> ls-output.txt
+
+	* we can still append to a file instead overwrite, just use `&>>`
+	* If we want to silence errors we can redirect to `/dev/null`, its like a dustbin in Windows. e.g. ls -l /bin/usr 2>/dev/null
+
+* how to redirect stdin?
+
+	* if we e.g. use `cat` command without specifing file, it reads from stdin until we send EOF (end of file) with ctrl+d
+
 
 
 #stderr #stdout #stdin #redirection #commands #hardlink #softlink #symboliclink #link #unix #gnu #linux
