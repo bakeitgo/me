@@ -8,6 +8,7 @@
 
 * Comments in bash -  `# some comment`
 
+* Dont use `./` in paths
 
 ### Commands
 
@@ -19,3 +20,5 @@
 
 
 
+
+#shellcheck #comments #clear #history #printf #shebang #path
