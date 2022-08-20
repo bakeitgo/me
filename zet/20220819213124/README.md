@@ -26,7 +26,9 @@
 ```bash
 name="john"
 
-echo ${name}1 // prints to stdout john1
+echo ${name}1 
+
+# prints to stdout john1
 
 ```
 
@@ -38,7 +40,8 @@ echo ${name}1 // prints to stdout john1
 function name {
 	commands
 	return
-} // or like that
+} 
+# or like that
 
 name () {
 	commands
