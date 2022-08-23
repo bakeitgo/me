@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# We dont use #!/bin/env to avoid being PWNED
+
+export PATH=/usr/sbin/:/usr/bin:/bin
+
+# We are exporting path to avoid being PWNED
+
+find . -type f
+
+# Now find cmnd is used only from dirs listed in PATH above
