@@ -1,0 +1,11 @@
+#!/bin/bash
+
+export PATH=/usr/sbin/:/usr/bin:/bin
+
+print () {
+	local name=${1:-there}
+	echo "Hello, $name"
+}
+print "${1^^}"
+
+# Print $1 in uppercase or there if not arg1 passed
