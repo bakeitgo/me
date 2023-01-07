@@ -1,0 +1,68 @@
+# Testing strategy (based on Brian Mann - assertJS (cypress))
+
+## How to approach testing?
+
+* Divide it by authenticated / unauthenticated user
+
+* Test in isolation, programmaticaly set state of app and take control about it
+
+## Should backend be mocked, or set in parallel?
+
+### Backend stubbed
+
+* fast, easy
+* no server, db
+* requires static data (fixtures in cy)
+* not true e2e (use mocks)
+
+### Backend in parallel with app
+
+#### Static user
+
+* real e2e tests
+* need to set db, server
+* need to seed db
+* tests share state
+
+
+#### Dynamic user
+
+* New user for each tests (isolation)
+* Modifying db in each test (querying it)
+* Slow approach (we need to setup db and teardown it before each test)
+
+
+
+## Testing using cypress
+
+* Tests should base on one thing
+* Tests should be isolated (e.g. login spec tests only login spec, rest state is set directly)
+* Tests should NOT use UI to set desired state for tests
+* Components are mini web apps
+
+## Testing theory by Gleb Bahmutov
+
+### Testing pyramid
+
+* There is no integration tests, all about test is to grab an input, do some with it, check the output (sounds like an unit tests)
+
+* Pyramid now contains two things, unit tests, e2e tests, some unit tests are replaced by.
+	
+	* Linters (static code analysis tool, encourages best practices, eliminates errors)
+	* Static types (typescript)
+	* Using libraries (less written code = less tests)
+	* using  crash reporting tool (e.g. rollbar)
+
+* E2e testing should do the things a user would do
+
+### Not only functional testing
+
+* Use also visual testing (percy.io, applitools) its screenshot diff (check pixel by pixel) (its snapshot, show us what has changed)
+* But  how to recognize why it changed? RECORD EVERY TEST AND COMPARE VIDEOS WHEN TEST WAS PASSING AND FAILING
+
+
+## References
+* https://www.youtube.com/watch?v=5XQOK0v_YRE
+* https://docs.cypress.io/guides/references/best-practices
+* https://www.youtube.com/watch?v=5FnalKRjpZk
+* https://www.youtube.com/watch?v=Fha2bVoC8SE
