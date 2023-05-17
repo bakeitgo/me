@@ -14,6 +14,7 @@
 
 * Operatory sa ewaluowane w nastepujacej kolejnosci:
 
+| Operators | Precedence |
 | ------------ | ------------ |
 | postfix | expr++ expr-- |
 | unary | ++expr --expr +expr -expr ~ ! |
