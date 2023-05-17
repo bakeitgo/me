@@ -31,7 +31,8 @@
 | ternary | ? : |
 | assignment | = += -= %= /= &= ^= |= <<= >>= >>>= |
 
-* operator ```instanceof``` sprawdza czy dany obiekt jest instancja okreslonej klasy, subklasy, lub korzysta z okreslonego interfejsu ```
+* operator ```instanceof``` sprawdza czy dany obiekt jest instancja okreslonej klasy, subklasy, lub korzysta z okreslonego interfejsu 
+```
 class Parent {}
 class Child extends Parent implements MyInterface {}
 interface MyInterface {}
