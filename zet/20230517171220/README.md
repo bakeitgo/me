@@ -32,7 +32,7 @@
 | assignment | = += -= %= /= &= ^= |= <<= >>= >>>= |
 
 * operator ```instanceof``` sprawdza czy dany obiekt jest instancja okreslonej klasy, subklasy, lub korzysta z okreslonego interfejsu 
-```
+```java
 class Parent {}
 class Child extends Parent implements MyInterface {}
 interface MyInterface {}
