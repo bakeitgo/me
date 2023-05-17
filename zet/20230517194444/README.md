@@ -65,7 +65,8 @@ public class MountainBike extends Bicycle implements BikeInterface {
 
 * Konstruktor
 
-	* Konstruktor, wyglada jak zwykla metoda, ale jest ekscytujaco niezwykla, bo to ona odpowiada zastworzenie naszej instancji
+* Konstruktor, wyglada jak zwykla metoda, ale jest ekscytujaco niezwykla, bo to ona odpowiada zastworzenie naszej instancji
+
 ```java
 public Bicycle(int startCadence, int startSpeed, int startGear) {
     gear = startGear;
@@ -78,7 +79,8 @@ public Bicycle(int startCadence, int startSpeed, int startGear) {
 Bicycle myBike = new Bicycle(30, 0, 8);
 ```
 
-	* Konstruktorkow moze byc wiecej niz 1, moze byc nawet bezargumentowy
+* Konstruktorkow moze byc wiecej niz 1, moze byc nawet bezargumentowy
+
 ```java
 public Bicycle() {
     gear = 1;
@@ -88,9 +90,9 @@ public Bicycle() {
 // takie konstruktorki maja swoje ograniczenia, tj. overloaded metody czyli nie moze byc dwoch takich samych konstruktorow, musza miec rozne zmienne w parametrach, lub roznic sie w liczbie tych zmiennych
 ```
 
-	* Klasa nie musi miec konstruktora, ale **ATENZIONE** wtedy ta klasa pzryjmuje default konstruktor, czyli taki bezargumentowy, ktory calluje super klase i sprawdza czy tam nie ma zadeklarowanego bezargumentowego konstruktora, ale jesli ojciec nie ma konstruktora, to wtedy twoja klasa przyjmuje bezargumentowy konstruktor zadeklarowany w klasie Object **Klasa Object jest defualtowo ojcem wszystkich klas**
+* Klasa nie musi miec konstruktora, ale **ATENZIONE** wtedy ta klasa pzryjmuje default konstruktor, czyli taki bezargumentowy, ktory calluje super klase i sprawdza czy tam nie ma zadeklarowanego bezargumentowego konstruktora, ale jesli ojciec nie ma konstruktora, to wtedy twoja klasa przyjmuje bezargumentowy konstruktor zadeklarowany w klasie Object **Klasa Object jest defualtowo ojcem wszystkich klas**
 
-	* Mozna uzywac modyfikatorow w deklaracji kosntruktora, aby kontrolowac kto moze uzywac danego konstruktora
+* Mozna uzywac modyfikatorow w deklaracji kosntruktora, aby kontrolowac kto moze uzywac danego konstruktora
 	
 
 # Related to: 
