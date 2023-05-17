@@ -72,8 +72,8 @@ class BreakWithLabelDemo {
 	enumerated types
 	the String type.
 
-	* od java se 14 syntax switcha mozna pisac w prostszy i czytelniejszy sposob:
-	```java
+* od java se 14 syntax switcha mozna pisac w prostszy i czytelniejszy sposob:
+```java
 // kiedys
 
 int day = ...; // any day
@@ -108,7 +108,7 @@ int len =
         case WEDNESDAY              -> 9;
     }
 System.out.println("len = " + len);
-	```
+```
 
 
 
