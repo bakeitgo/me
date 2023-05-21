@@ -90,7 +90,7 @@ public Bicycle() {
 // takie konstruktorki maja swoje ograniczenia, tj. overloaded metody czyli nie moze byc dwoch takich samych konstruktorow, musza miec rozne zmienne w parametrach, lub roznic sie w liczbie tych zmiennych
 ```
 
-* Klasa nie musi miec konstruktora, ale **ATENZIONE** wtedy ta klasa pzryjmuje default konstruktor, czyli taki bezargumentowy, ktory calluje super klase i sprawdza czy tam nie ma zadeklarowanego bezargumentowego konstruktora, ale jesli ojciec nie ma konstruktora, to wtedy twoja klasa przyjmuje bezargumentowy konstruktor zadeklarowany w klasie Object **Klasa Object jest defualtowo ojcem wszystkich klas**
+* Klasa nie musi miec konstruktora, ale **ATENZIONE** wtedy ta klasa pzryjmuje default konstruktor, czyli taki bezargumentowy, ktory calluje super klase i sprawdza czy tam nie ma zadeklarowanego bezargumentowego konstruktora,jesli ojciec nie ma konstruktora, to wtedy leci compile-time error. **ATENZIONE** jesli twoja klasa nie ma zadnego ojca, wtedy jej ojcem defaultowo jest *Object* a ta klasa ma juz bezargumentowy konstruktor **Klasa Object jest defualtowo ojcem wszystkich klas**
 
 * Mozna uzywac modyfikatorow w deklaracji kosntruktora, aby kontrolowac kto moze uzywac danego konstruktora
 	
