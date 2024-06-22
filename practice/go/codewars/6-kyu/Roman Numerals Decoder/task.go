@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 )
 
@@ -42,6 +43,8 @@ func Decode(roman string) (result int) {
 }
 
 func main() {
+	aa := ADDITIVE_NOTATION["elo"]
+	fmt.Print(aa)
 }
 
 /*

@@ -5,25 +5,23 @@ import (
 	"strings"
 )
 
-func reverse(str string) (reversed string) {
-	for i := len(str) - 1; i >= 0; i-- {
-		reversed += string(str[i])
-	}
-	return
-}
-
 func SpinWords(str string) string {
-	var spinnedWords []string
-	words := strings.Split(str, " ")
-	for _, word := range words {
-		if len(word) >= 5 {
-			word = reverse(word)
+	aTokens := strings.Split(str, " ")
+	for i, word := range aTokens {
+		if len([]rune(word)) > 4 {
+			aTokens[i] = reverse(word)
 		}
-		spinnedWords = append(spinnedWords, word)
 	}
-
-	return strings.Join(spinnedWords, " ")
+	return strings.Join(aTokens, " ")
 } // SpinWords
+
+func reverse(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
+}
 
 func main() {
 	fmt.Println(SpinWords("Hey fellow warriors"))
