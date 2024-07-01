@@ -75,7 +75,7 @@ func qs(arr []int) {
 	}
 	pivot := partition(arr)
 	qs(arr[:pivot.index()])
-	qs(arr[pivot.index():])
+	qs(arr[pivot.index()+1:])
 }
 
 func QuickSort(arr []int) []int {
