@@ -28,14 +28,12 @@ func NewBinaryNode(v int, left, right *binaryNode[int]) *binaryNode[int] {
 }
 
 func (t *binaryTree[T]) AddLeftLeaf(leaf *binaryNode[T]) *binaryTree[T] {
-	t.size++
 	t.size += leaf.size
 	t.root.left = leaf
 	return t
 }
 
 func (t *binaryTree[T]) AddRightLeaf(leaf *binaryNode[T]) *binaryTree[T] {
-	t.size++
 	t.size += leaf.size
 	t.root.right = leaf
 	return t
@@ -189,4 +187,31 @@ func find[T int](node *binaryNode[T], value T) (found bool) {
 
 func Find[T int](tree *binaryTree[T], value T) bool {
 	return find(tree.root, value)
+}
+
+func insert[T int](node *binaryNode[T], value T) T {
+	// base case
+	if node == nil {
+		node = &binaryNode[T]{&value, nil, nil, 1}
+		return value
+	}
+	if value <= *node.data && node.left == nil {
+		node.left = &binaryNode[T]{&value, nil, nil, 1}
+		return value
+	}
+	if value > *node.data && node.right == nil {
+		node.right = &binaryNode[T]{&value, nil, nil, 1}
+		return value
+	}
+	// recursive case
+	if value <= *node.data {
+		return insert(node.left, value)
+	} else {
+		return insert(node.right, value)
+	}
+}
+
+func Insert[T int](tree *binaryTree[T], value T) (inserted T) {
+	inserted = insert(tree.root, value)
+	return
 }
