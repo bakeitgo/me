@@ -238,37 +238,43 @@ func TestBinaryTreeFindValue(t *testing.T) {
 }
 
 var binaryTreeInsert = []struct {
-	tree               *binaryTree[int]
-	insertValue        int
-	expectedTreeHeight int
+	treeToInsert *binaryTree[int]
+	insertValue  int
 }{
 	{
-		tree:        &binaryTree[int]{nil, 0},
-		insertValue: 10,
+		treeToInsert: &binaryTree[int]{nil, 0},
+		insertValue:  10,
 	},
 	{
-		tree:        NewBinaryTree(111),
-		insertValue: 10,
+
+		treeToInsert: NewBinaryTree(111),
+		insertValue:  10,
 	},
 	{
-		tree:        NewBinaryTree(111),
-		insertValue: 122,
+
+		treeToInsert: NewBinaryTree(111),
+		insertValue:  122,
 	},
 	{
-		tree:        NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
-		insertValue: 11,
+		treeToInsert: NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+		insertValue:  11,
 	},
 	{
-		tree:        NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
-		insertValue: 122,
+		treeToInsert: NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+		insertValue:  122,
 	},
 }
 
 func TestBinaryTreeInsert(t *testing.T) {
-	for _, tc := range binaryTreeInsert {
-		inserted := Insert(tc.tree, tc.insertValue)
+	for idx, tc := range binaryTreeInsert {
+		inserted := Insert(tc.treeToInsert, tc.insertValue)
+		found := Find(tc.treeToInsert, tc.insertValue)
 		if inserted != tc.insertValue {
 			t.Fatalf("Inserted value is wrong. Actual: %d, Expected: %d", inserted, tc.insertValue)
+		}
+
+		if found == false {
+			t.Fatalf("At test case: %d, Didnt find inserted value: %d", idx, inserted)
 		}
 	}
 }

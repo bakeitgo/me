@@ -174,13 +174,12 @@ func Compare[T int](tree1, tree2 *binaryTree[T]) bool {
 	return compare(tree1.root, tree2.root)
 }
 
-func find[T int](node *binaryNode[T], value T) (found bool) {
+func find[T int](node *binaryNode[T], value T) bool {
 	if node == nil {
-		return
+		return false
 	}
 	if value == *node.data {
-		found = true
-		return
+		return true
 	}
 	return find(node.left, value) || find(node.right, value)
 }
@@ -191,10 +190,6 @@ func Find[T int](tree *binaryTree[T], value T) bool {
 
 func insert[T int](node *binaryNode[T], value T) T {
 	// base case
-	if node == nil {
-		node = &binaryNode[T]{&value, nil, nil, 1}
-		return value
-	}
 	if value <= *node.data && node.left == nil {
 		node.left = &binaryNode[T]{&value, nil, nil, 1}
 		return value
@@ -212,6 +207,10 @@ func insert[T int](node *binaryNode[T], value T) T {
 }
 
 func Insert[T int](tree *binaryTree[T], value T) (inserted T) {
+	if tree.root == nil {
+		tree.root = &binaryNode[T]{&value, nil, nil, 1}
+		return value
+	}
 	inserted = insert(tree.root, value)
 	return
 }
