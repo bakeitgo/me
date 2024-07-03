@@ -158,3 +158,35 @@ func BFSTraverse(tree *binaryTree[int]) (traversedValues []int) {
 	bfsTraverse(q, &traversedValues)
 	return traversedValues
 }
+
+func compare[T comparable](leftBranch, rightBranch *binaryNode[T]) bool {
+	if leftBranch == nil && rightBranch == nil {
+		return true
+	}
+	if leftBranch == nil || rightBranch == nil {
+		return false
+	}
+	if *leftBranch.data != *rightBranch.data {
+		return false
+	}
+	return compare(leftBranch.left, rightBranch.left) && compare(leftBranch.right, rightBranch.right)
+}
+
+func Compare[T int](tree1, tree2 *binaryTree[T]) bool {
+	return compare(tree1.root, tree2.root)
+}
+
+func find[T int](node *binaryNode[T], value T) (found bool) {
+	if node == nil {
+		return
+	}
+	if value == *node.data {
+		found = true
+		return
+	}
+	return find(node.left, value) || find(node.right, value)
+}
+
+func Find[T int](tree *binaryTree[T], value T) bool {
+	return find(tree.root, value)
+}

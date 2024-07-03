@@ -1,6 +1,8 @@
 package tree
 
-import "testing"
+import (
+	"testing"
+)
 
 type binarytreetestCase struct {
 	name     string
@@ -119,6 +121,118 @@ func TestBFSBinaryTreeTraverse(t *testing.T) {
 	for i, expected := range treeTraverse.expected {
 		if expected != treeValues[i] {
 			t.Fatalf("Missing data after traversal: actual: %d, expected: %d, at index: %d", treeValues[i], expected, i)
+		}
+	}
+}
+
+var binaryTreeComparison = []struct {
+	leftTree  *binaryTree[int]
+	rightTree *binaryTree[int]
+	expected  bool
+}{{
+	leftTree:  NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+	rightTree: NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+	/*
+						 111
+				   /           \
+				 1               2
+			   /    \         /     \
+			 10      20      12      22
+		   /    \   /  \    /  \    /  \
+		 30     40 50   60 32   42 52   62
+	*/
+	expected: true,
+}, {
+	leftTree:  NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+	rightTree: NewBinaryTree(111).AddRightLeaf(leftLeaf),
+	/*
+						 111
+				   /           \
+				 1               2
+			   /    \         /     \
+			 10      20      12      22
+		   /    \   /  \    /  \    /  \
+		 30     40 50   60 32   42 52   62
+	*/
+	expected: false,
+}}
+
+func TestBinaryTreeComparison(t *testing.T) {
+	for _, tc := range binaryTreeComparison {
+		equal := Compare(tc.leftTree, tc.rightTree)
+		if equal != tc.expected {
+			t.Fatalf("Tree are not equal")
+		}
+	}
+}
+
+var binaryTreeFind = []struct {
+	tree      *binaryTree[int]
+	findValue int
+	expected  bool
+}{{
+	tree:      NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+	findValue: 111,
+	/*
+						 111
+				   /           \
+				 1               2
+			   /    \         /     \
+			 10      20      12      22
+		   /    \   /  \    /  \    /  \
+		 30     40 50   60 32   42 52   62
+	*/
+	expected: true,
+}, {
+	tree:      NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+	findValue: 15,
+	/*
+						 111
+				   /           \
+				 1               2
+			   /    \         /     \
+			 10      20      12      22
+		   /    \   /  \    /  \    /  \
+		 30     40 50   60 32   42 52   62
+	*/
+	expected: false,
+},
+	{
+		tree:      NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+		findValue: 52,
+		/*
+							 111
+					   /           \
+					 1               2
+				   /    \         /     \
+				 10      20      12      22
+			   /    \   /  \    /  \    /  \
+			 30     40 50   60 32   42 52   62
+		*/
+		expected: true,
+	},
+
+	{
+		tree:      NewBinaryTree(111).AddLeftLeaf(leftLeaf).AddRightLeaf(rightLeaf),
+		findValue: 40,
+		/*
+							 111
+					   /           \
+					 1               2
+				   /    \         /     \
+				 10      20      12      22
+			   /    \   /  \    /  \    /  \
+			 30     40 50   60 32   42 52   62
+		*/
+		expected: true,
+	},
+}
+
+func TestBinaryTreeFindValue(t *testing.T) {
+	for idx, tc := range binaryTreeFind {
+		found := Find(tc.tree, tc.findValue)
+		if found != tc.expected {
+			t.Fatalf("At test case %d, expected find result: %v, actual: %v", idx, tc.expected, found)
 		}
 	}
 }
