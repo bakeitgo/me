@@ -1,0 +1,981 @@
+
+USE nowa24;
+
+  
+
+DROP VIEW IF EXISTS Client_Rentals; 
+
+DROP VIEW IF EXISTS Client_Transactions; 
+
+DROP VIEW IF EXISTS Client_Reservations; 
+
+DROP TABLE IF EXISTS Rentals; 
+
+DROP TABLE IF EXISTS Transactions; 
+
+DROP TABLE IF EXISTS Reservations; 
+
+DROP TABLE IF EXISTS Cars; 
+
+DROP TABLE IF EXISTS Car_Engine_Capacity; 
+
+DROP TABLE IF EXISTS Car_Model; 
+
+DROP TABLE IF EXISTS Car_Brand; 
+
+DROP TABLE IF EXISTS Clients; 
+
+DROP TABLE IF EXISTS Car_Segments; 
+
+  
+
+DROP PROCEDURE IF EXISTS ReserveCar; 
+
+GO 
+
+DROP PROCEDURE IF EXISTS CancelReservation; 
+
+GO 
+DROP PROCEDURE IF EXISTS CancelRent; 
+
+GO 
+
+  
+
+DROP PROCEDURE IF EXISTS MakeTransaction; 
+
+GO 
+
+  
+
+DROP PROCEDURE IF EXISTS RentCar; 
+
+GO 
+
+  
+
+DROP PROCEDURE IF EXISTS GetCarsByStatus; 
+
+GO 
+
+  
+
+DROP PROCEDURE IF EXISTS GetCarsBySegment; 
+
+GO 
+
+  
+
+DROP PROCEDURE IF EXISTS GetCarsByEngineCapacity; 
+
+GO 
+
+  
+
+DROP PROCEDURE IF EXISTS AddCar; 
+
+GO 
+
+  
+
+CREATE TABLE Clients ( 
+
+    client_id INT IDENTITY(1,1) PRIMARY KEY, 
+
+    first_name VARCHAR(50) NOT NULL, 
+
+    last_name VARCHAR(50) NOT NULL, 
+
+    email VARCHAR(100) NOT NULL UNIQUE, 
+
+    phone VARCHAR(20) NOT NULL, 
+
+    address VARCHAR(255) NOT NULL, 
+
+); 
+
+CREATE TABLE Car_Brand ( 
+
+	brand_id INT IDENTITY(1,1) PRIMARY KEY, 
+
+	brand VARCHAR(50) NOT NULL UNIQUE, 
+
+); 
+
+CREATE TABLE Car_Model ( 
+
+	model_id INT IDENTITY(1,1)  PRIMARY KEY, 
+
+	brand_id INT NOT NULL, 
+
+	model VARCHAR(50) NOT NULL UNIQUE, 
+
+	FOREIGN KEY (brand_id) REFERENCES Car_Brand(brand_id) 
+
+); 
+
+  
+
+CREATE TABLE Car_Engine_Capacity ( 
+
+	capacity FLOAT NOT NULL CONSTRAINT CK_Capacity_Less_Than_0 CHECK (capacity > 0) PRIMARY KEY, 
+
+); 
+
+  
+
+CREATE TABLE Car_Segments ( 
+
+	segment VARCHAR(255) PRIMARY KEY, 
+
+	price_per_day INT NOT NULL CONSTRAINT CK_Car_Segment_Less_Than_0 CHECK(price_per_day >= 0), 
+
+); 
+
+  
+
+CREATE TABLE Cars ( 
+
+    car_id INT IDENTITY(1,1) PRIMARY KEY, 
+
+    model_id INT NOT NULL, 
+
+	segment VARCHAR(255) NOT NULL, 
+
+    year INT NOT NULL CONSTRAINT CK_Cars_Year_Less_Than_1886 CHECK(year >= 1886), --  pierwszy samochod w 1886 
+
+    registration_no VARCHAR(20) NOT NULL UNIQUE, 
+
+	engine_capacity FLOAT NOT NULL, 
+
+    status INT NOT NULL CONSTRAINT CK_Cars_Status_Not_In_0_2_Range CHECK (status IN (0, 1, 2)), -- 0 FREE, 1 RESERVED, 2 RENTED 
+
+	FOREIGN KEY (model_id) REFERENCES Car_Model(model_id), 
+
+	FOREIGN KEY (engine_capacity) REFERENCES Car_Engine_Capacity(capacity), 
+
+	FOREIGN KEY (segment) REFERENCES Car_Segments(segment), 
+
+); 
+
+  
+
+CREATE TABLE Reservations ( 
+
+    reservation_id INT IDENTITY(1,1) PRIMARY KEY, 
+
+    customer_id INT NOT NULL, 
+
+    car_id INT NOT NULL, 
+
+	total_price DECIMAL(10, 2) NOT NULL CHECK (total_price >= 0), 
+
+    start_date DATE NOT NULL, 
+
+    end_date DATE NOT NULL, 
+
+    FOREIGN KEY (customer_id) REFERENCES Clients(client_id), 
+
+    FOREIGN KEY (car_id) REFERENCES Cars(car_id), 
+
+	CONSTRAINT CK_Reservations_StartDate_Greater_Than_EndDate CHECK (end_date > start_date) 
+
+); 
+
+  
+
+CREATE TABLE Rentals ( 
+
+    rental_id INT IDENTITY(1,1), 
+
+    reservation_id INT UNIQUE, 
+
+    rental_start DATE NOT NULL, 
+
+    rental_end DATE NOT NULL, 
+
+	PRIMARY KEY(rental_id, reservation_id), 
+
+    FOREIGN KEY (reservation_id) REFERENCES Reservations(reservation_id), -- zeby wynajac trzeba najpierw zarezerwowac 
+
+	CONSTRAINT CK_Reservations_RentalStart_Greater_Than_RentalEnd CHECK (rental_end > rental_start) 
+
+); 
+
+CREATE TABLE Transactions ( 
+
+    transaction_id INT IDENTITY(1,1) PRIMARY KEY, 
+
+    reservation_id INT NOT NULL, 
+
+    transaction_date DATE NOT NULL, 
+
+    payment_method VARCHAR(50) NOT NULL, 
+
+    FOREIGN KEY (reservation_id) REFERENCES Reservations(reservation_id) 
+
+); 
+
+  
+
+GO 
+
+  
+
+  
+
+CREATE VIEW Client_Rentals AS 
+
+SELECT 
+
+    c.client_id, 
+
+    c.first_name, 
+
+    c.last_name, 
+
+    r.reservation_id, 
+
+    rt.rental_id, 
+
+    rt.rental_start, 
+
+    rt.rental_end, 
+
+    cr.registration_no, 
+
+    cr.status 
+
+FROM 
+
+    Clients c 
+
+JOIN Reservations r ON c.client_id = r.customer_id 
+
+JOIN Rentals rt ON r.reservation_id = rt.reservation_id 
+
+JOIN Cars cr ON r.car_id = cr.car_id; 
+
+  
+
+  
+
+GO 
+
+CREATE VIEW Client_Reservations AS 
+
+SELECT 
+
+    c.client_id, 
+
+    c.first_name, 
+
+    c.last_name, 
+
+    r.reservation_id, 
+
+    r.car_id, 
+
+    r.total_price, 
+
+    r.start_date, 
+
+    r.end_date 
+
+FROM 
+
+    Clients c 
+
+JOIN Reservations r ON c.client_id = r.customer_id; 
+
+  
+
+GO 
+
+  
+
+CREATE VIEW Client_Transactions AS 
+
+SELECT 
+
+    c.client_id, 
+
+    c.first_name, 
+
+    c.last_name, 
+
+    t.transaction_id, 
+
+    t.reservation_id, 
+
+    t.transaction_date, 
+
+    t.payment_method 
+
+FROM 
+
+    Clients c 
+
+JOIN Reservations r ON c.client_id = r.customer_id 
+
+JOIN Transactions t ON r.reservation_id = t.reservation_id; 
+
+GO 
+
+  -- procedury
+
+CREATE PROCEDURE GetCarsByStatus 
+
+    @status INT 
+
+AS 
+
+BEGIN 
+
+    SELECT * 
+
+    FROM Cars 
+
+    WHERE status = @status; 
+
+END; 
+
+GO 
+
+  
+
+  
+
+CREATE PROCEDURE GetCarsBySegment 
+
+    @segment VARCHAR(255) 
+
+AS 
+
+BEGIN 
+
+    SELECT * 
+
+    FROM Cars 
+
+    WHERE segment = @segment; 
+
+END; 
+
+GO 
+
+  
+
+GO 
+
+  
+
+CREATE PROCEDURE GetCarsByEngineCapacity 
+
+    @capacity FLOAT
+
+AS 
+
+BEGIN 
+
+    SELECT c.* 
+
+    FROM Cars c 
+
+    JOIN Car_Engine_Capacity ec ON c.engine_capacity = ec.capacity 
+
+    WHERE ec.capacity = @capacity; 
+
+END; 
+
+GO 
+
+  
+
+  
+
+GO 
+
+CREATE PROCEDURE AddCar 
+
+    @model_id INT, 
+
+    @year INT, 
+
+    @registration_no VARCHAR(20), 
+
+    @engine_capacity FLOAT, 
+
+    @segment VARCHAR(255) 
+
+AS 
+
+BEGIN 
+
+    INSERT INTO Cars (model_id, year, registration_no, engine_capacity, status, segment) 
+
+    VALUES (@model_id, @year, @registration_no, @engine_capacity, 0, @segment); 
+
+END; 
+
+GO 
+
+  
+
+CREATE PROCEDURE MakeTransaction 
+
+    @reservation_id INT, 
+
+    @transaction_date DATE, 
+
+    @payment_method VARCHAR(50) 
+
+AS 
+
+BEGIN 
+
+    IF NOT EXISTS (SELECT 1 FROM Reservations WHERE reservation_id = @reservation_id) 
+
+    BEGIN 
+
+        RAISERROR('Reservation does not exist.', 16, 1); 
+
+        RETURN; 
+
+    END 
+
+  
+
+    INSERT INTO Transactions (reservation_id, transaction_date, payment_method) 
+
+    VALUES (@reservation_id, @transaction_date, @payment_method); 
+
+END; 
+
+GO 
+
+  
+
+CREATE PROCEDURE ReserveCar 
+    @customer_id INT, 
+    @car_id INT, 
+    @start_date DATE, 
+    @end_date DATE 
+AS 
+BEGIN 
+    DECLARE @total_price DECIMAL(10, 2); 
+    BEGIN TRANSACTION; 
+    BEGIN TRY 
+        IF @start_date < CAST(GETDATE() AS DATE)
+        BEGIN 
+            RAISERROR('Start date cannot be in the past.', 16, 1); 
+            ROLLBACK TRANSACTION; 
+            RETURN; 
+        END 
+        IF NOT EXISTS (SELECT 1 FROM Cars WHERE car_id = @car_id) 
+        BEGIN 
+            RAISERROR('Car does not exist.', 16, 1); 
+            ROLLBACK TRANSACTION; 
+            RETURN; 
+        END 
+
+        IF NOT EXISTS (SELECT 1 FROM Clients WHERE client_id = @customer_id) 
+        BEGIN 
+            RAISERROR('Customer does not exist.', 16, 1); 
+            ROLLBACK TRANSACTION; 
+            RETURN; 
+        END 
+        
+		SELECT @total_price = price_per_day * DATEDIFF(DAY, @start_date, @end_date) 
+        FROM Car_Segments  
+        WHERE segment = (SELECT segment FROM Cars WHERE car_id = @car_id); 
+
+        IF EXISTS (
+            SELECT 1 
+            FROM Reservations 
+            WHERE car_id = @car_id 
+              AND (
+                  (@start_date >= start_date AND @start_date < end_date) OR
+                  (@end_date > start_date AND @end_date <= end_date) OR
+                  (@start_date <= start_date AND @end_date >= end_date)
+              )
+        )
+        BEGIN
+            RAISERROR('Car is already reserved for the specified period.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+
+        INSERT INTO Reservations (customer_id, car_id, total_price, start_date, end_date) 
+        VALUES (@customer_id, @car_id, @total_price, @start_date, @end_date); 
+
+        UPDATE Cars 
+        SET status = 1 
+        WHERE car_id = @car_id; 
+
+        COMMIT TRANSACTION; 
+
+    END TRY 
+
+    BEGIN CATCH 
+        ROLLBACK TRANSACTION; 
+        THROW; 
+    END CATCH 
+END;
+
+GO 
+
+  
+
+-- Wynajmij samochod 
+
+CREATE PROCEDURE RentCar 
+
+	@customer_id INT, 
+
+    @reservation_id INT, 
+
+    @rental_start DATE, 
+
+    @rental_end DATE 
+
+AS 
+
+BEGIN 
+
+    -- Start a transaction 
+
+    BEGIN TRANSACTION; 
+
+  
+
+    BEGIN TRY 
+
+	    -- Sprawdzamy czy klient istnieje w bazie danych 
+
+        IF NOT EXISTS (SELECT 1 FROM Clients WHERE client_id = @customer_id) 
+
+        BEGIN 
+
+            RAISERROR('Customer does not exist.', 16, 1); 
+
+            ROLLBACK TRANSACTION; 
+
+            RETURN; 
+
+        END 
+
+  
+
+        -- Musimy sprawdzic czy rezerwacja zostala juz dokonana (powinien byc 1: RESERVED) 
+
+        IF NOT EXISTS (SELECT 1 FROM Reservations WHERE reservation_id = @reservation_id AND @customer_id = customer_id) 
+
+        BEGIN 
+
+            RAISERROR('Reservation is reserved for another client.', 16, 1); 
+
+            ROLLBACK TRANSACTION; 
+
+            RETURN; 
+
+        END 
+
+  
+
+        -- Wezmy id samochodu z tabeli Reservations 
+
+        DECLARE @car_id INT; 
+
+		DECLARE @reservation_start_date DATE; 
+
+		DECLARE @reservation_end_date DATE; 
+
+        SELECT @car_id = car_id,  
+
+		@reservation_start_date = start_date,  
+
+		@reservation_end_date = end_date  
+
+		FROM Reservations WHERE reservation_id = @reservation_id; 
+
+  
+
+        -- Sprawdz czy samochod jest zarezerwowany 
+
+        IF NOT EXISTS (SELECT 1 FROM Cars WHERE car_id = @car_id AND status = 1) 
+
+        BEGIN 
+
+            RAISERROR('Car is not reserved for renting.', 16, 1); 
+
+            ROLLBACK TRANSACTION; 
+
+            RETURN; 
+
+        END 
+
+  
+
+		-- Sprawdzamy czy uzytkownik wynajmuje w zakresie okreslonym w rezerwacji 
+
+		IF @rental_start < @reservation_start_date OR @rental_end > @reservation_end_date 
+
+        BEGIN 
+
+            RAISERROR('Rental dates do not match the reservation dates.', 16, 1); 
+
+            ROLLBACK TRANSACTION; 
+
+            RETURN; 
+
+        END 
+
+		 
+
+        -- Dodawanie wartosci do Rentals 
+
+        INSERT INTO Rentals (reservation_id, rental_start, rental_end) 
+
+        VALUES (@reservation_id, @rental_start, @rental_end); 
+
+  
+
+        UPDATE Cars 
+
+        SET status = 2 
+
+        WHERE car_id = @car_id; 
+
+  
+
+        COMMIT TRANSACTION; 
+
+    END TRY 
+
+    BEGIN CATCH 
+
+        ROLLBACK TRANSACTION; 
+
+  
+
+        THROW; 
+
+    END CATCH 
+
+END; 
+
+GO 
+
+
+GO
+CREATE PROCEDURE CancelReservation
+    @reservation_id INT
+AS
+BEGIN
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        IF NOT EXISTS (SELECT 1 FROM Reservations WHERE reservation_id = @reservation_id)
+        BEGIN
+            RAISERROR('Reservation does not exist.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+
+		IF EXISTS (SELECT 1 FROM Rentals WHERE rental_id =  @reservation_id)
+		BEGIN 
+			RAISERROR('Car is rented',16,1);
+			ROLLBACK TRANSACTION;
+			RETURN;
+		END
+
+        DECLARE @car_id INT;
+        SELECT @car_id = car_id
+        FROM Reservations
+        WHERE reservation_id = @reservation_id;
+
+        DELETE FROM Reservations WHERE reservation_id = @reservation_id;
+
+        UPDATE Cars SET status = 0 WHERE car_id = @car_id;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+
+        THROW;
+    END CATCH
+END;
+GO
+
+CREATE PROCEDURE CancelRent
+    @rental_id INT
+AS
+BEGIN
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        IF NOT EXISTS (SELECT 1 FROM Rentals WHERE rental_id = @rental_id)
+        BEGIN
+            RAISERROR('Rental does not exist.', 16, 1);
+            ROLLBACK TRANSACTION;
+            RETURN;
+        END
+
+        DECLARE @reservation_id INT;
+        DECLARE @car_id INT;
+        SELECT @reservation_id = Rent.reservation_id,
+               @car_id = Res.car_id
+        FROM Rentals Rent
+        JOIN Reservations Res ON Res.reservation_id = Rent.reservation_id
+        WHERE rental_id = @rental_id;
+
+		DELETE FROM Transactions WHERE reservation_id = @reservation_id;
+
+        DELETE FROM Rentals WHERE rental_id = @rental_id;
+
+        -- Delete the associated reservation
+        DELETE FROM Reservations WHERE reservation_id = @reservation_id;
+
+        -- Update the car status to FREE (status = 0)
+        UPDATE Cars SET status = 0 WHERE car_id = @car_id;
+
+        -- Commit the transaction
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        -- Rollback the transaction if any error occurs
+        ROLLBACK TRANSACTION;
+
+        -- Re-throw the error to be handled by the caller
+        THROW;
+    END CATCH
+END;
+GO
+
+
+  
+
+SELECT * FROM Client_Rentals; 
+
+SELECT * FROM Client_Reservations; 
+
+SELECT * FROM Client_Transactions; 
+
+  
+
+  
+
+-- Inserting into Clients 
+
+INSERT INTO Clients (first_name, last_name, email, phone, address) VALUES 
+
+('John', 'Doe', 'john.doe@example.com', '1234567890', '123 Main St'), 
+
+('Jane', 'Smith', 'jane.smith@example.com', '0987654321', '456 Oak St'), 
+
+('Robert', 'Johnson', 'robert.johnson@example.com', '1111111111', '789 Pine St'), 
+
+('Michael', 'Williams', 'michael.williams@example.com', '2222222222', '101 Maple St'), 
+
+('Mary', 'Brown', 'mary.brown@example.com', '3333333333', '102 Cedar St'), 
+
+('Patricia', 'Jones', 'patricia.jones@example.com', '4444444444', '103 Birch St'), 
+
+('Linda', 'Garcia', 'linda.garcia@example.com', '5555555555', '104 Walnut St'), 
+
+('Barbara', 'Martinez', 'barbara.martinez@example.com', '6666666666', '105 Elm St'), 
+
+('Elizabeth', 'Rodriguez', 'elizabeth.rodriguez@example.com', '7777777777', '106 Ash St'), 
+
+('James', 'Miller', 'james.miller@example.com', '8888888888', '107 Spruce St'), 
+
+('William', 'Davis', 'william.davis@example.com', '9999999999', '108 Willow St'), 
+
+('Richard', 'Gonzalez', 'richard.gonzalez@example.com', '1010101010', '109 Sycamore St'), 
+
+('Joseph', 'Perez', 'joseph.perez@example.com', '1111111112', '110 Hickory St'), 
+
+('Thomas', 'Wilson', 'thomas.wilson@example.com', '1212121212', '111 Beech St'), 
+
+('Christopher', 'Anderson', 'christopher.anderson@example.com', '1313131313', '112 Cherry St'); 
+
+  
+
+-- Inserting into Car_Brand 
+
+INSERT INTO Car_Brand (brand) VALUES 
+
+('Toyota'), ('Honda'), ('Ford'), ('Chevrolet'), ('Nissan'), 
+
+('BMW'), ('Mercedes-Benz'), ('Volkswagen'), ('Audi'), ('Hyundai'), 
+
+('Kia'), ('Mazda'), ('Subaru'), ('Dodge'), ('Jeep'); 
+
+  
+
+-- Inserting into Car_Model 
+
+INSERT INTO Car_Model (brand_id, model) VALUES 
+
+(1, 'Corolla'), (1, 'Camry'), (2, 'Civic'), (2, 'Accord'), (3, 'Mustang'), 
+
+(3, 'F-150'), (4, 'Silverado'), (4, 'Malibu'), (5, 'Altima'), (5, 'Sentra'), 
+
+(6, '3 Series'), (6, 'X5'), (7, 'C-Class'), (7, 'E-Class'), (8, 'Golf'); 
+
+  
+
+-- Inserting into Car_Engine_Capacity 
+
+INSERT INTO Car_Engine_Capacity (capacity) VALUES 
+
+(1.5), (2.0), (2.5), (3.0), (3.5), 
+
+(4.0), (4.5), (5.0), (1.2), (1.8), 
+
+(2.2), (2.7), (3.3), (3.8), (4.2); 
+
+  
+
+-- Inserting into Car_Segments 
+
+INSERT INTO Car_Segments (segment, price_per_day) VALUES 
+
+('Standard', 100), ('Comfort', 200), ('Premium', 300), ('Exotic', 500); 
+
+  
+
+-- Adding Cars 
+/*
+-- Inserting into Car_Engine_Capacity 
+
+INSERT INTO Car_Engine_Capacity (capacity) VALUES 
+
+(1.5), (2.0), (2.5), (3.0), (3.5), 
+
+(4.0), (4.5), (5.0), (1.2), (1.8), 
+
+(2.2), (2.7), (3.3), (3.8), (4.2); 
+*/
+
+EXEC AddCar @model_id = 1, @year = 2018, @registration_no = 'ABC123', @engine_capacity = 1.5, @segment = 'Standard'; 
+
+EXEC AddCar @model_id = 2, @year = 2019, @registration_no = 'DEF456', @engine_capacity = 2.2, @segment = 'Comfort'; 
+
+EXEC AddCar @model_id = 3, @year = 2020, @registration_no = 'GHI789', @engine_capacity = 3.0, @segment = 'Premium'; 
+
+EXEC AddCar @model_id = 4, @year = 2021, @registration_no = 'JKL012', @engine_capacity = 4.5, @segment = 'Exotic'; 
+
+EXEC AddCar @model_id = 5, @year = 2017, @registration_no = 'MNO345', @engine_capacity = 2.0, @segment = 'Standard'; 
+
+EXEC AddCar @model_id = 6, @year = 2018, @registration_no = 'PQR678', @engine_capacity = 4.5, @segment = 'Comfort'; 
+
+EXEC AddCar @model_id = 7, @year = 2019, @registration_no = 'STU901', @engine_capacity = 5.0, @segment = 'Premium'; 
+
+EXEC AddCar @model_id = 8, @year = 2020, @registration_no = 'VWX234', @engine_capacity = 3.8, @segment = 'Exotic'; 
+
+EXEC AddCar @model_id = 9, @year = 2021, @registration_no = 'YZA567', @engine_capacity = 4.2, @segment = 'Standard'; 
+
+EXEC AddCar @model_id = 10, @year = 2017, @registration_no = 'BCD890', @engine_capacity = 1.8, @segment = 'Comfort'; 
+
+EXEC AddCar @model_id = 11, @year = 2018, @registration_no = 'EFG123', @engine_capacity = 3.5, @segment = 'Premium'; 
+
+EXEC AddCar @model_id = 12, @year = 2019, @registration_no = 'HIJ456', @engine_capacity = 3.5, @segment = 'Exotic'; 
+
+EXEC AddCar @model_id = 13, @year = 2020, @registration_no = 'KLM789', @engine_capacity = 3.3, @segment = 'Standard'; 
+
+EXEC AddCar @model_id = 14, @year = 2021, @registration_no = 'NOP012', @engine_capacity = 4.0, @segment = 'Comfort'; 
+
+EXEC AddCar @model_id = 15, @year = 2017, @registration_no = 'QRS345', @engine_capacity = 4.5, @segment = 'Premium'; 
+
+EXEC AddCar @model_id = 15, @year = 2015, @registration_no = 'CWX273', @engine_capacity = 3.3, @segment = 'Standard'; 
+
+EXEC AddCar @model_id = 12, @year = 2015, @registration_no = 'CWA243', @engine_capacity = 3.3, @segment = 'Standard'; 
+  
+-- Reserving Cars with updated dates
+
+EXEC ReserveCar @customer_id = 1, @car_id = 1, @start_date = '2024-07-01', @end_date = '2024-07-04'; 
+EXEC ReserveCar @customer_id = 2, @car_id = 2, @start_date = '2024-07-05', @end_date = '2024-07-08'; 
+EXEC ReserveCar @customer_id = 3, @car_id = 3, @start_date = '2024-07-10', @end_date = '2024-07-13'; 
+EXEC ReserveCar @customer_id = 4, @car_id = 4, @start_date = '2024-07-15', @end_date = '2024-07-18'; 
+EXEC ReserveCar @customer_id = 5, @car_id = 5, @start_date = '2024-07-20', @end_date = '2024-07-23'; 
+EXEC ReserveCar @customer_id = 6, @car_id = 6, @start_date = '2024-07-25', @end_date = '2024-07-28'; 
+EXEC ReserveCar @customer_id = 7, @car_id = 7, @start_date = '2024-08-01', @end_date = '2024-08-04'; 
+EXEC ReserveCar @customer_id = 8, @car_id = 8, @start_date = '2024-08-05', @end_date = '2024-08-08'; 
+EXEC ReserveCar @customer_id = 9, @car_id = 9, @start_date = '2024-08-10', @end_date = '2024-08-13'; 
+EXEC ReserveCar @customer_id = 10, @car_id = 10, @start_date = '2024-08-15', @end_date = '2024-08-18'; 
+EXEC ReserveCar @customer_id = 11, @car_id = 11, @start_date = '2024-08-20', @end_date = '2024-08-23'; 
+EXEC ReserveCar @customer_id = 12, @car_id = 12, @start_date = '2024-08-25', @end_date = '2024-08-28'; 
+EXEC ReserveCar @customer_id = 13, @car_id = 13, @start_date = '2024-09-01', @end_date = '2024-09-04'; 
+EXEC ReserveCar @customer_id = 14, @car_id = 14, @start_date = '2024-09-05', @end_date = '2024-09-08'; 
+EXEC ReserveCar @customer_id = 15, @car_id = 15, @start_date = '2024-09-10', @end_date = '2024-09-13'; 
+
+-- Selecting all reservations
+SELECT * FROM RESERVATIONS;
+
+-- Making Transactions with updated reservation IDs
+
+EXEC MakeTransaction @reservation_id = 1, @transaction_date = '2024-07-01', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 2, @transaction_date = '2024-07-05', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 3, @transaction_date = '2024-07-10', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 4, @transaction_date = '2024-07-15', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 5, @transaction_date = '2024-07-20', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 6, @transaction_date = '2024-07-25', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 7, @transaction_date = '2024-08-01', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 8, @transaction_date = '2024-08-05', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 9, @transaction_date = '2024-08-10', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 10, @transaction_date = '2024-08-15', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 11, @transaction_date = '2024-08-20', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 12, @transaction_date = '2024-08-25', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 13, @transaction_date = '2024-09-01', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 14, @transaction_date = '2024-09-05', @payment_method = 'Credit Card'; 
+EXEC MakeTransaction @reservation_id = 15, @transaction_date = '2024-09-10', @payment_method = 'Credit Card'; 
+
+-- Renting Cars with updated dates
+
+EXEC RentCar @customer_id = 1, @reservation_id = 1, @rental_start = '2024-07-01', @rental_end = '2024-07-04'; 
+EXEC RentCar @customer_id = 2, @reservation_id = 2, @rental_start = '2024-07-05', @rental_end = '2024-07-08'; 
+EXEC RentCar @customer_id = 3, @reservation_id = 3, @rental_start = '2024-07-10', @rental_end = '2024-07-13'; 
+EXEC RentCar @customer_id = 4, @reservation_id = 4, @rental_start = '2024-07-15', @rental_end = '2024-07-18'; 
+EXEC RentCar @customer_id = 5, @reservation_id = 5, @rental_start = '2024-07-20', @rental_end = '2024-07-23'; 
+EXEC RentCar @customer_id = 6, @reservation_id = 6, @rental_start = '2024-07-25', @rental_end = '2024-07-28'; 
+EXEC RentCar @customer_id = 7, @reservation_id = 7, @rental_start = '2024-08-01', @rental_end = '2024-08-04'; 
+EXEC RentCar @customer_id = 8, @reservation_id = 8, @rental_start = '2024-08-05', @rental_end = '2024-08-08'; 
+EXEC RentCar @customer_id = 9, @reservation_id = 9, @rental_start = '2024-08-10', @rental_end = '2024-08-13'; 
+EXEC RentCar @customer_id = 10, @reservation_id = 10, @rental_start = '2024-08-15', @rental_end = '2024-08-18'; 
+EXEC RentCar @customer_id = 11, @reservation_id = 11, @rental_start = '2024-08-20', @rental_end = '2024-08-23'; 
+EXEC RentCar @customer_id = 12, @reservation_id = 12, @rental_start = '2024-08-25', @rental_end = '2024-08-28'; 
+EXEC RentCar @customer_id = 13, @reservation_id = 13, @rental_start = '2024-09-01', @rental_end = '2024-09-04'; 
+EXEC RentCar @customer_id = 14, @reservation_id = 14, @rental_start = '2024-09-05', @rental_end = '2024-09-08'; 
+EXEC RentCar @customer_id = 15, @reservation_id = 15, @rental_start = '2024-09-10', @rental_end = '2024-09-13'; 
+
+
+
+EXEC CancelRent @rental_id = 1;
+
+
+EXEC GetCarsByStatus @status = 2;
+
+EXEC GetCarsBySegment @segment = 'EXOTIC'; 
+
+EXEC GetCarsByEngineCapacity @capacity = 2.0;
+
+
+SELECT * FROM Car_Model;
+
+
+EXEC AddCar @model_id = 12, @year = 2015, @registration_no = 'CDD243', @engine_capacity = 3.3, @segment = 'Standard'; 
+
+SELECT * FROM Cars;
+
+SELECT * FROM Reservations;
+
+EXEC ReserveCar @customer_id = 1, @car_id = 18, @start_date = '2025-01-11', @end_date = '2025-01-12';
+
+EXEC RentCar @customer_id = 1, @reservation_id = 17, @rental_start = '2025-01-11', @rental_end = '2025-01-12';
+
+SELECT * FROM Rentals;
+
+EXEC CancelRent @rental_id =16;
