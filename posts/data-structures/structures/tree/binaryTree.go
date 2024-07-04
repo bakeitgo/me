@@ -188,29 +188,81 @@ func Find[T int](tree *binaryTree[T], value T) bool {
 	return find(tree.root, value)
 }
 
-func insert[T int](node *binaryNode[T], value T) T {
+// >= values inserted to the right / < values to the left
+func insert[T int](node **binaryNode[T], value T) T {
 	// base case
-	if value <= *node.data && node.left == nil {
-		node.left = &binaryNode[T]{&value, nil, nil, 1}
+	if *node == nil {
+		*node = &binaryNode[T]{&value, nil, nil, 1}
 		return value
 	}
-	if value > *node.data && node.right == nil {
-		node.right = &binaryNode[T]{&value, nil, nil, 1}
+	if value <= *(*node).data && (*node).left == nil {
+		(*node).left = &binaryNode[T]{&value, nil, nil, 1}
+		return value
+	}
+	if value > *(*node).data && (*node).right == nil {
+		(*node).right = &binaryNode[T]{&value, nil, nil, 1}
 		return value
 	}
 	// recursive case
-	if value <= *node.data {
-		return insert(node.left, value)
+	if value <= *(*node).data {
+		return insert(&(*node).left, value)
 	} else {
-		return insert(node.right, value)
+		return insert(&(*node).right, value)
 	}
 }
 
-func Insert[T int](tree *binaryTree[T], value T) (inserted T) {
-	if tree.root == nil {
-		tree.root = &binaryNode[T]{&value, nil, nil, 1}
-		return value
-	}
-	inserted = insert(tree.root, value)
+func Insert[T int](tree **binaryTree[T], value T) (inserted T) {
+	inserted = insert(&(*tree).root, value)
 	return
+}
+
+func insertNode[T int](node **binaryNode[T], insert *binaryNode[T]) bool {
+	if insert == nil {
+		return false
+	}
+	if (*node).left == nil {
+		(*node).left = insert
+		return true
+	}
+	return insertNode(node, insert)
+}
+
+func delete[T int](node **binaryNode[T], value T) bool {
+	if *node == nil {
+		return false
+	}
+	if *(*node).data == value {
+		// deleting node have no children
+		if (*node).left == nil && (*node).right == nil {
+			*node = nil
+			return true
+		}
+		// deleting node  got left children
+		if (*node).left != nil && (*node).right == nil {
+			*node = (*node).left
+			return true
+		}
+		// deleting node got right children
+		if (*node).left == nil && (*node).right != nil {
+			*node = (*node).right
+			return true
+		}
+		// deleting node got both left / right children
+		if (*node).left != nil && (*node).right != nil {
+			insertNode(&(*node).right.left, (*node).left)
+			*node = (*node).right
+			return true
+		}
+	}
+	if value > *(*node).data {
+		return delete(&(*node).right, value)
+	}
+	if value < *(*node).data {
+		return delete(&(*node).left, value)
+	}
+	return false
+}
+
+func Delete[T int](tree **binaryTree[int], value T) bool {
+	return delete(&(*tree).root, int(value))
 }

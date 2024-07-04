@@ -267,7 +267,7 @@ var binaryTreeInsert = []struct {
 
 func TestBinaryTreeInsert(t *testing.T) {
 	for idx, tc := range binaryTreeInsert {
-		inserted := Insert(tc.treeToInsert, tc.insertValue)
+		inserted := Insert(&tc.treeToInsert, tc.insertValue)
 		found := Find(tc.treeToInsert, tc.insertValue)
 		if inserted != tc.insertValue {
 			t.Fatalf("Inserted value is wrong. Actual: %d, Expected: %d", inserted, tc.insertValue)
@@ -277,4 +277,89 @@ func TestBinaryTreeInsert(t *testing.T) {
 			t.Fatalf("At test case: %d, Didnt find inserted value: %d", idx, inserted)
 		}
 	}
+}
+
+func TestBinaryTreeInsert2(t *testing.T) {
+	tc := binaryTreeInsert[0]
+	inserted := Insert(&tc.treeToInsert, tc.insertValue)
+	found := Find(tc.treeToInsert, tc.insertValue)
+	if inserted != tc.insertValue {
+		t.Fatalf("Inserted value is wrong. Actual: %d, Expected: %d", inserted, tc.insertValue)
+	}
+
+	if found == false {
+		t.Fatalf("Didnt find inserted value: %d", inserted)
+	}
+	inserted2 := Insert(&tc.treeToInsert, 1000)
+	found = Find(tc.treeToInsert, 1000)
+	if inserted2 != 1000 {
+		t.Fatalf("Inserted value is wrong. Actual: %d, Expected: %d", inserted2, 1000)
+	}
+
+	if found == false {
+		t.Fatalf("Didnt find inserted value: %d", inserted)
+	}
+}
+
+/*
+					 111
+			   /           \
+			 99              150
+		   /    \         /       \
+		 97      105    130        170
+	   /    \   /  \    /  \      /  \
+	 40     98 103 107 120   132 151   171
+*/
+var leftOrderedLeaf = NewBinaryNode(99, NewBinaryNode(97, NewBinaryNode(40, nil, nil), NewBinaryNode(98, nil, nil)), NewBinaryNode(105, NewBinaryNode(103, nil, nil), NewBinaryNode(107, nil, nil)))
+var rightOrderedLeaf = NewBinaryNode(150, NewBinaryNode(130, NewBinaryNode(120, nil, nil), NewBinaryNode(132, nil, nil)), NewBinaryNode(170, NewBinaryNode(151, nil, nil), NewBinaryNode(171, nil, nil)))
+var binaryTreeDelete = []struct {
+	tree        *binaryTree[int]
+	deleteValue int
+	expected    bool
+}{
+	{
+		tree:        &binaryTree[int]{nil, 0},
+		deleteValue: 10,
+		expected:    false,
+	},
+	{
+
+		tree:        NewBinaryTree(111),
+		deleteValue: 111,
+		expected:    true,
+	},
+	{
+		tree:        NewBinaryTree(111).AddLeftLeaf(leftOrderedLeaf).AddRightLeaf(rightOrderedLeaf),
+		deleteValue: 40,
+		expected:    true,
+	},
+	{
+		tree:        NewBinaryTree(111).AddLeftLeaf(leftOrderedLeaf).AddRightLeaf(rightOrderedLeaf),
+		deleteValue: 99,
+		expected:    true,
+	},
+}
+
+func TestBinaryTreeDelete(t *testing.T) {
+	for idx, tc := range binaryTreeDelete {
+		deleted := Delete(&tc.tree, tc.deleteValue)
+		if deleted != tc.expected {
+			t.Fatalf("At index %d on value %d deletion test failed. Expected: %v Actual: %v", idx, tc.deleteValue, tc.expected, deleted)
+		}
+		found := Find(tc.tree, tc.deleteValue)
+		if found == true {
+			t.Fatalf("At index %d on value %d deletion test failed. Value has  been found in tree after deletion.", idx, tc.deleteValue)
+		}
+		if idx == len(binaryTreeDelete)-1 {
+			found := Find(tc.tree, 105)
+			if found == false {
+				t.Fatalf("At index %d on value %d deletion test failed. Value has gone after deletion. It should be shifted", idx, 105)
+			}
+			found = Find(tc.tree, 97)
+			if found == false {
+				t.Fatalf("At index %d on value %d deletion test failed. Value has gone after deletion. It should be shifted", idx, 97)
+			}
+		}
+	}
+
 }
