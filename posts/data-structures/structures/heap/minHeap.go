@@ -65,6 +65,14 @@ func (mh *minHeap) Insert(value int) {
 	mh.heapifyUp()
 }
 func (mh *minHeap) Delete(valueAt int) (deleted int) {
+	if len(mh.h) == 0 {
+		return -1
+	}
+	if len(mh.h) == 1 {
+		deleted = mh.h[0]
+		mh.h = mh.h[:0]
+		return
+	}
 	deleted = mh.h[valueAt]
 	mh.h[valueAt], mh.h[len(mh.h)-1] = mh.h[len(mh.h)-1], mh.h[valueAt]
 	mh.h = mh.h[:len(mh.h)-1]
@@ -92,13 +100,17 @@ func (mh *minHeap) heapifyDown(valueAt int) {
 		if leftIdx >= len(mh.h) || rightIdx >= len(mh.h) {
 			break
 		}
-		if mh.h[leftIdx] < mh.h[rightIdx] {
+		if mh.h[leftIdx] < mh.h[rightIdx] && mh.h[valueAt] > mh.h[leftIdx] {
 			mh.h[valueAt], mh.h[leftIdx] = mh.h[leftIdx], mh.h[valueAt]
 			valueAt = leftIdx
-		} else {
+			continue
+		}
+		if mh.h[valueAt] > mh.h[rightIdx] {
 			mh.h[valueAt], mh.h[rightIdx] = mh.h[rightIdx], mh.h[valueAt]
 			valueAt = rightIdx
+			continue
 		}
+		break
 	}
 }
 
@@ -113,11 +125,7 @@ func main() {
 	mh.Insert(900)
 	mh.Insert(500)
 	mh.Delete(1)
-	mh.Delete(2)
-	mh.Delete(1)
 	mh.Delete(3)
-	mh.Delete(1)
-	mh.Delete(1)
 	for i, v := range mh.h {
 		fmt.Printf("ind %d val %d\n", i, v)
 
